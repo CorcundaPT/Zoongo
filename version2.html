@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Zoongo</title>
+	</head>
+	<style>
+		body{
+			margin:0px;
+			display:grid;
+			text-align:center;
+		}
+		
+		.preview{
+			width:fit-content;
+			margin:auto;
+			text-align:left;
+			line-height: 1.3em;
+			background-color:rgb(255,255,255);
+			padding: 10px 20px;
+			border-radius:15px;
+			border: 3px double rgba(0,0,0,0.4);
+			font-size:14pt;
+		}
+		table{
+			width:400px;
+			height:300px;
+			border:2px double black;
+			padding:2px;
+			margin:auto;
+		}
+		td,th{
+			border:1px solid black
+		}
+		th p{
+			font-size: 0.7cm;
+			margin: 0cm 0px;
+			padding:0px;
+		}
+		td p{
+			font-size: 10pt;
+			margin: 0cm 0px;
+			padding:0px;
+		}
+		td{
+			text-align:center;
+			width:25%;
+			height:25%;
+		}
+	</style>
+	<body style="background-color:black">
+		<div style="display:grid; grid-template-columns:50% 50%; width:1200px; margin:auto; margin-top:30px; border-radius:50px; background-color:rgb(200,200,200); padding:20px 10px;">
+			<div style="">
+				<p style="font-size:24pt; font-weight:bold; margin:0px;">Opções para o Zoongo</p>
+				<div>
+					<button onclick="printShow()">Show</button>
+					<button onclick="printCinema()">Cinema</button>
+				</div>
+				<textarea id="input" style="width: 500px; height: 600px; font-size:12pt; border-radius:10px; padding:5px 10px; border: 3px double rgba(0,0,0,0.4); max-width:95%;"></textarea>
+
+				<p style="margin: 0px 0px 10px 0px"><small>Um opção por linha</small></p>
+				<div>
+					<button onclick="getInput()">Guardar</button>
+					<button onclick="printZoongo('pagesTop')">Imprimir</button>
+					<input id="pagesTop" type="number" value=1 style="width:30px">
+				</div>
+				<!--trocar o input text por uma area de texto livre-->
+			</div>
+			<div style="">
+				<p style="font-size:24pt; font-weight:bold; margin:0px; margin-bottom:10px;">Opções Guardadas</p>
+				<div id="preview" class="preview" style="display:none"></div>
+			</div>
+			<div style="grid-column:1/span 2;">
+				<div id="zoongoTest">
+					<table>
+						<tr>
+							<th colspan=4><p>Zoongo</p></th>
+						</tr>
+						<tr>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+						</tr>
+						<tr>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+						</tr>
+						<tr>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+						</tr>
+						<tr>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+							<td><p>...</p></td>
+						</tr>
+					</table>
+				</div>
+				<button onclick="testOutput()" style="margin-top:5px;">Misturar</button>
+					<button onclick="printZoongo('pagesBottom')">Imprimir</button>
+					<input id="pagesBottom" type="number" value=1 style="width:30px">
+			</div>
+		</div>
+	
+		<script>
+			const listComum = 'Alguem refere folgas\n"Onde é o WC?"\n"Já se pode entrar?"\nConversas anti-eticas\nAlguem refere o fim do dia\n"Que horas são?"\n"Quanto tempo tempo?"\nCliente com roupa de roupa de um equipa\nAndré diz cona\nDaniel arrota';
+			console.log('lista Comum: ' + listComum.split('\n').length);
+			
+			const listShow = 'Quer entrar no estadio com o bebe no carrinho\nDolphin Emotion Meeting Point\nMeet&Greet Meeting Point\n"Onde são as borboletas?"\n"O que é isto?"\nCliente senta-se nas centrais\n"É por aqui?"\n"É preciso comprar bilhete para ver o show?"\n"Onde são os cacifos?"\n"Posso beber/comer no estádio?"\n"Já acabou?"\n"Quando é que o show começar?"\n"Já começou?"\nCliente pergunta por Horarios/Mapa\nAtirar a bola de volta';
+			console.log('lista Show: ' + listShow.split('\n').length);
+			
+			const listCinema = 'Cliente chega a beber/comer\nCliente tenta levar os oculos\nOculos partidos\nFecha as pertas a tempo\nFecha portas após tempo\nBatem na porta\nCliente saia a metade do filme';
+			console.log('lista Cinema: ' + listCinema.split('\n').length);
+			
+			console.log('Prelist uploaded!')
+			
+			function printShow(){
+				var textArea = document.getElementById('input');
+				textArea.value = '';
+				textArea.value = listComum + '\n' + listShow;
+			}
+			
+			function printCinema(){
+				var textArea = document.getElementById('input');
+				textArea.value = '';
+				textArea.value = listComum + '\n' + listCinema;
+			}
+
+			function getInput(){
+				//vai buscar a lista
+				var getInput = document.getElementById('input').value;
+				localStorage.setItem('zoongoListToBePrinted', getInput);
+				var input = getInput.split('\n');
+				console.log(input)
+				//mandar para preview
+				var preview = document.getElementById('preview');
+				preview.innerHTML = '';
+				var list = document.createElement('ol');
+				for(let i=0; i<input.length; i++){
+					var listItem = document.createElement('li');
+					listItem.appendChild(document.createTextNode(input[i]));
+					list.appendChild(listItem);
+				};
+				preview.appendChild(list);
+				//ver se existe
+				if(getInput!=''){
+					document.getElementById('preview').style.display = 'block';
+					console.log('saved!');
+					testOutput();
+				}else{
+					document.getElementById('preview').style.display = 'none';
+					console.log('nothing to save!');
+				};
+			};
+			
+			function testOutput(){
+				var getInput = document.getElementById('input').value;
+				var input = getInput.split('\n');
+				var inputTemp = input.slice();
+				var inputCount = input.length;
+				var test = document.getElementById('zoongoTest')
+				test.innerHTML = '';
+				var outputTable = document.createElement('table');
+				var outputRow = document.createElement('tr');
+				var outputCell = document.createElement('th');
+				outputCell.colSpan = 4;
+				var outputText = document.createElement('p');
+				var outputContent = document.createTextNode('Zoongo');
+				outputText.appendChild(outputContent);
+				outputCell.appendChild(outputText);
+				outputRow.appendChild(outputCell);
+				outputTable.appendChild(outputRow);
+				for(let a=0; a<4; a++){
+					var outputRow = document.createElement('tr');
+					for(let b=0; b<4; b++){
+						var outputCell = document.createElement('td');
+						var outputText = document.createElement('p');
+						var getNumber = Math.floor(Math.random()*inputCount)
+						var outputContent = document.createTextNode(inputTemp[getNumber]);
+						inputCount--
+						inputTemp.splice(getNumber,1);
+						outputText.appendChild(outputContent);
+						outputCell.appendChild(outputText);
+						outputRow.appendChild(outputCell);
+					}
+					outputTable.appendChild(outputRow);
+				}
+				test.appendChild(outputTable);
+			}
+			
+			function printZoongo(quantaty){
+				var pagesCount = document.getElementById(quantaty).value;
+				localStorage.setItem('zoongoPrintablePages', pagesCount);
+				window.open('sketch.html');
+			}
+		</script>
+	</body>
+	
+</html>

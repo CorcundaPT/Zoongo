@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		body{
+			margin:0px;
+			background-color: black;
+		}
+		.page{
+			background-color:white;
+			width: 21cm;
+			height: 30.5cm;
+			display:flex;
+			flex-wrap:wrap;
+			margin:auto;
+			justify-content: space-around;
+		}
+		table{
+			width:49%;
+			height:32%;
+			border:2px double black;
+			padding:2px;
+		}
+		td,th{
+			border:1px solid black
+		}
+		th p{
+			font-size: 0.7cm;
+			margin: 0cm 0px;
+			padding:0px;
+		}
+		td p{
+			font-size: 10pt;
+			margin: 0cm 0px;
+			padding:0px;
+		}
+		td{
+			text-align:center;
+			width:25%;
+			height:25%;
+		}
+	</style>
+	<body>
+		<script>
+			<!--Load da lista-->
+			const ZoongoPrelist = ['Alguem refere folgas', '"Onde é o WC?"','"Já se pode entrar?"','Conversas anti-eticas','Alguem refere o fim do dia','"Que horas são?"','"Quanto tempo tempo?"','Cliente com roupa de roupa de um equipa','Quer entrar no estadio com o bebe no carrinho','Dolphin Emotion Meeting Point','Meet&Greet Meeting Point','"Onde são as borboletas?"','"O que é isto?"','Cliente senta-se nas centrais','"É por aqui?"','"É preciso comprar bilhete para ver o show?"','"Onde são os cacifos?"','"Posso beber/comer no estádio?"','"Já acabou?"','"Quando é que o show começar?"','"Já começou?"','Cliente pergunta por Horarios/Mapa'];
+			var getInput = localStorage.getItem('zoongoListToBePrinted');
+			const ZoongoList = getInput.split('\n');
+			const ZoongoCount =  ZoongoList.length;
+			
+			<!--confirmar se está tudo ok-->
+			console.log(ZoongoList);
+			console.log(ZoongoCount);
+			
+			<!--preset number para criar paginas-->
+			const pageNumber = localStorage.getItem('zoongoPrintablePages')
+			
+			<!--Criar a tabela com itens da lista-->
+			<!--criar a paginas-->
+			for (let a=0; a<pageNumber; a++){
+				<!--criar a pagina-->
+				var outputPage = document.createElement('div');
+				outputPage.className = 'page';
+				<!--conteudo da pagina-->
+				for (let b=0; b<6; b++){
+					<!--criar lista temporaria-->
+					var ZoongoTemplist = ZoongoList.slice();
+					var ZoongoTempCount = ZoongoCount;
+					console.log(ZoongoList.length)
+					<!--criar a table-->
+					var outputTable = document.createElement('table');
+					<!--adicionar o logo à tabela-->
+					var outputRow = document.createElement('tr');
+					var outputCell = document.createElement('th');
+					outputCell.colSpan = 4;
+					var outputText = document.createElement('p');
+					var outputContent = document.createTextNode('Zoongo');
+					outputText.appendChild(outputContent);
+					outputCell.appendChild(outputText);
+					outputRow.appendChild(outputCell);
+					outputTable.appendChild(outputRow);
+					<!--conteudo da tabela-->
+					for (let c=0; c<4; c++){
+						<!--criar linha-->
+						var outputRow = document.createElement('tr');
+						for (let d=0; d<4; d++){
+							<!--criar celula-->
+							var outputCell = document.createElement('td');
+							var outputText = document.createElement('p');
+							<!--adicionar uma opçao aliatoria-->
+							var getNumber = Math.floor(Math.random()*ZoongoTempCount);
+							ZoongoTempCount--
+							var outputContent = document.createTextNode(ZoongoTemplist[getNumber]);
+							ZoongoTemplist.splice(getNumber, 1);
+							outputText.appendChild(outputContent);
+							outputCell.appendChild(outputText);
+							outputRow.appendChild(outputCell);
+						}
+						outputTable.appendChild(outputRow);
+					}
+					outputPage.appendChild(outputTable);
+				}
+				document.body.appendChild(outputPage);
+			}
+		</script>
+	</body>
+</html>
