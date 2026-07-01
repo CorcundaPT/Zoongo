@@ -117,6 +117,10 @@
 			const listCinema = 'Cliente chega a beber/comer\nCliente tenta levar os oculos\nOculos partidos\nFecha as pertas a tempo\nFecha portas após tempo\nBatem na porta\nCliente saia a metade do filme';
 			console.log('lista Cinema: ' + listCinema.split('\n').length);
 			
+			if(localStorage.getItem('zoongoListToBePrinted')){
+				document.getElementById('input').value = localStorage.getItem('zoongoListToBePrinted')
+			}
+			
 			console.log('Prelist uploaded!')
 			
 			function printShow(){
